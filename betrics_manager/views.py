@@ -10,6 +10,7 @@ import json
 class BookSubscription(APIView):
 
     def get(self, request):
+        print(request.user.email)
         payload = {
             "http_method": request.method
         }
