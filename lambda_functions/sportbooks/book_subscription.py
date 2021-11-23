@@ -137,12 +137,7 @@ def list_subscription(username):
 
 def lambda_handler(events):
     http_method = events.get("http_method", "None")
-
-    class User:
-        email = "admin@admin.com"
-
-    user = User()
-    # user = authenticate_user(events.get('headers'))
+    user = events.get("user")
 
     if http_method == "GET":
         response = list_subscription(user.email)
