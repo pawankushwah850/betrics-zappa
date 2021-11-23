@@ -1,16 +1,16 @@
 from django.views.decorators.csrf import csrf_exempt
-import json
-from lambda_functions.user_auth import login
-from django.http import JsonResponse, HttpResponse
+from django.http import JsonResponse
+from requests import post as AWS_POST
 
 @csrf_exempt
 def user_login(request):
     if request.method == "POST":
+        url = "https://aws.betrics.io/user/login"
 
-        body = request.body
-        data = json.loads(body.decode("utf-8"))
-
-        response = login.lambda_handler(data)
-        return HttpResponse("happy")
+        headers = {
+            'Content-Type': 'application/json'
+        }
+        response = AWS_POST(url, headers=headers, data=request.body)
+        return JsonResponse(response.json(), safe=False)
     else:
         return JsonResponse({"body": "GET method is not allowed"})
